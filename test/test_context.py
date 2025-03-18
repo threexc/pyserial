@@ -15,7 +15,7 @@ Cover some of the aspects of context management
 """
 
 import unittest
-import serial
+import pyserial
 
 # on which port should the tests be performed:
 PORT = 'loop://'
@@ -26,7 +26,7 @@ class Test_Context(unittest.TestCase):
 
     def setUp(self):
         # create a closed serial port
-        self.s = serial.serial_for_url(PORT)
+        self.s = pyserial.serial_for_url(PORT)
 
     def tearDown(self):
         self.s.close()

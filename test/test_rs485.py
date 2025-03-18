@@ -9,8 +9,8 @@ Test RS485 related functionality.
 """
 
 import unittest
-import serial
-import serial.rs485
+import pyserial
+import pyserial.rs485
 
 # on which port should the tests be performed:
 PORT = 'loop://'
@@ -21,7 +21,7 @@ class Test_RS485_settings(unittest.TestCase):
 
     def setUp(self):
         # create a closed serial port
-        self.s = serial.serial_for_url(PORT, do_not_open=True)
+        self.s = pyserial.serial_for_url(PORT, do_not_open=True)
 
     def tearDown(self):
         self.s.close()
@@ -31,7 +31,7 @@ class Test_RS485_settings(unittest.TestCase):
         #~ self.s.open()
         self.assertEqual(self.s._rs485_mode, None, 'RS485 is disabled by default')
         self.assertEqual(self.s.rs485_mode, None, 'RS485 is disabled by default')
-        self.s.rs485_mode = serial.rs485.RS485Settings()
+        self.s.rs485_mode = pyserial.rs485.RS485Settings()
         self.assertTrue(self.s._rs485_mode is not None, 'RS485 is enabled')
         self.assertTrue(self.s.rs485_mode is not None, 'RS485 is enabled')
         self.s.rs485_mode = None
@@ -43,15 +43,15 @@ class Test_RS485_class(unittest.TestCase):
     """Test RS485 class"""
 
     def setUp(self):
-        if not isinstance(serial.serial_for_url(PORT), serial.Serial):
+        if not isinstance(pyserial.serial_for_url(PORT), pyserial.Serial):
             raise unittest.SkipTest("RS485 test only compatible with real serial port")
-        self.s = serial.rs485.RS485(PORT, timeout=1)
+        self.s = pyserial.rs485.RS485(PORT, timeout=1)
 
     def tearDown(self):
         self.s.close()
 
     def test_RS485_class(self):
-        self.s.rs485_mode = serial.rs485.RS485Settings()
+        self.s.rs485_mode = pyserial.rs485.RS485Settings()
         self.s.write(b'hello')
         self.assertEqual(self.s.read(5), b'hello')
 

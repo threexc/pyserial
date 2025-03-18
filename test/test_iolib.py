@@ -27,7 +27,7 @@ On a 9 pole DSUB these are the pins (2-3) (4-6) (7-8)
 import io
 import sys
 import unittest
-import serial
+import pyserial
 
 # on which port should the tests be performed:
 PORT = 'loop://'
@@ -36,7 +36,7 @@ PORT = 'loop://'
 class Test_SerialAndIO(unittest.TestCase):
 
     def setUp(self):
-        self.s = serial.serial_for_url(PORT, timeout=1)
+        self.s = pyserial.serial_for_url(PORT, timeout=1)
         #~ self.io = io.TextIOWrapper(self.s)
         self.io = io.TextIOWrapper(io.BufferedRWPair(self.s, self.s))
 

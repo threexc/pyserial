@@ -20,7 +20,7 @@ correctly implemented and that the interface does what it should.
 """
 
 import unittest
-import serial
+import pyserial
 
 # on which port should the tests be performed:
 PORT = 'loop://'
@@ -31,7 +31,7 @@ class Test_ChangeAttributes(unittest.TestCase):
 
     def setUp(self):
         # create a closed serial port
-        self.s = serial.serial_for_url(PORT, do_not_open=True)
+        self.s = pyserial.serial_for_url(PORT, do_not_open=True)
 
     def tearDown(self):
         self.s.close()
@@ -48,7 +48,7 @@ class Test_ChangeAttributes(unittest.TestCase):
     def test_DoubleOpen(self):
         self.s.open()
         # calling open for a second time is an error
-        self.assertRaises(serial.SerialException, self.s.open)
+        self.assertRaises(pyserial.SerialException, self.s.open)
 
     def test_BaudrateSetting(self):
         self.s.open()
@@ -82,7 +82,7 @@ class Test_ChangeAttributes(unittest.TestCase):
             self.assertRaises(ValueError, setattr, self.s, 'bytesize', illegal_value)
 
     def test_ParitySetting(self):
-        for parity in (serial.PARITY_NONE, serial.PARITY_EVEN, serial.PARITY_ODD):
+        for parity in (pyserial.PARITY_NONE, pyserial.PARITY_EVEN, pyserial.PARITY_ODD):
             self.s.parity = parity
             # test get method
             self.assertEqual(self.s.parity, parity)
@@ -138,7 +138,7 @@ class Test_ChangeAttributes(unittest.TestCase):
     # now, already sets a port
     def disabled_test_UnconfiguredPort(self):
         # an unconfigured port cannot be opened
-        self.assertRaises(serial.SerialException, self.s.open)
+        self.assertRaises(pyserial.SerialException, self.s.open)
 
     def test_PortOpenClose(self):
         for i in range(3):

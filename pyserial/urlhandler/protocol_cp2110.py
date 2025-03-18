@@ -39,8 +39,8 @@ except ImportError:
 
 import hid  # hidapi
 
-import serial
-from serial.serialutil import SerialBase, SerialException, PortNotOpenError, to_bytes, Timeout
+import pyserial
+from pyserial.serialutil import SerialBase, SerialException, PortNotOpenError, to_bytes, Timeout
 
 
 # Report IDs and related constant
@@ -124,15 +124,15 @@ class Serial(SerialBase):
 
     def _reconfigure_port(self):
         parity_value = None
-        if self._parity == serial.PARITY_NONE:
+        if self._parity == pyserial.PARITY_NONE:
             parity_value = 0x00
-        elif self._parity == serial.PARITY_ODD:
+        elif self._parity == pyserial.PARITY_ODD:
             parity_value = 0x01
-        elif self._parity == serial.PARITY_EVEN:
+        elif self._parity == pyserial.PARITY_EVEN:
             parity_value = 0x02
-        elif self._parity == serial.PARITY_MARK:
+        elif self._parity == pyserial.PARITY_MARK:
             parity_value = 0x03
-        elif self._parity == serial.PARITY_SPACE:
+        elif self._parity == pyserial.PARITY_SPACE:
             parity_value = 0x04
         else:
             raise ValueError('Invalid parity: {!r}'.format(self._parity))
@@ -155,11 +155,11 @@ class Serial(SerialBase):
             raise ValueError('Invalid char len: {!r}'.format(self._bytesize))
 
         stop_bits_value = None
-        if self._stopbits == serial.STOPBITS_ONE:
+        if self._stopbits == pyserial.STOPBITS_ONE:
             stop_bits_value = 0x00
-        elif self._stopbits == serial.STOPBITS_ONE_POINT_FIVE:
+        elif self._stopbits == pyserial.STOPBITS_ONE_POINT_FIVE:
             stop_bits_value = 0x01
-        elif self._stopbits == serial.STOPBITS_TWO:
+        elif self._stopbits == pyserial.STOPBITS_TWO:
             stop_bits_value = 0x01
         else:
             raise ValueError('Invalid stop bit specification: {!r}'.format(self._stopbits))

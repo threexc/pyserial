@@ -10,7 +10,7 @@ Test Timeout helper class.
 import sys
 import unittest
 import time
-from serial import serialutil
+from pyserial import serialutil
 
 
 class TestTimeoutClass(unittest.TestCase):

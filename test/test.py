@@ -25,7 +25,7 @@ import unittest
 import threading
 import time
 import sys
-import serial
+import pyserial
 
 # on which port should the tests be performed:
 PORT = 'loop://'
@@ -44,7 +44,7 @@ class Test4_Nonblocking(unittest.TestCase):
     timeout = 0
 
     def setUp(self):
-        self.s = serial.serial_for_url(PORT, timeout=self.timeout)
+        self.s = pyserial.serial_for_url(PORT, timeout=self.timeout)
 
     def tearDown(self):
         self.s.close()
@@ -119,7 +119,7 @@ class Test1_Forever(unittest.TestCase):
     character is sent after some time to stop the test, this is done
     through the SendEvent class and the Loopback HW."""
     def setUp(self):
-        self.s = serial.serial_for_url(PORT, timeout=None)
+        self.s = pyserial.serial_for_url(PORT, timeout=None)
         self.event = SendEvent(self.s)
 
     def tearDown(self):
@@ -137,7 +137,7 @@ class Test1_Forever(unittest.TestCase):
 class Test2_Forever(unittest.TestCase):
     """Tests a port with no timeout"""
     def setUp(self):
-        self.s = serial.serial_for_url(PORT, timeout=None)
+        self.s = pyserial.serial_for_url(PORT, timeout=None)
 
     def tearDown(self):
         self.s.close()
@@ -162,7 +162,7 @@ class Test2_Forever(unittest.TestCase):
 class Test0_DataWires(unittest.TestCase):
     """Test modem control lines"""
     def setUp(self):
-        self.s = serial.serial_for_url(PORT)
+        self.s = pyserial.serial_for_url(PORT)
 
     def tearDown(self):
         self.s.close()
@@ -194,12 +194,12 @@ class Test_MoreTimeouts(unittest.TestCase):
     """Test with timeouts"""
     def setUp(self):
         # create an closed serial port
-        self.s = serial.serial_for_url(PORT, do_not_open=True)
+        self.s = pyserial.serial_for_url(PORT, do_not_open=True)
 
     def tearDown(self):
         self.s.reset_output_buffer()
         self.s.flush()
-        #~ self.s.write(serial.XON)
+        #~ self.s.write(pyserial.XON)
         self.s.close()
         # reopen... some faulty USB-serial adapter make next test fail otherwise...
         self.s.timeout = 1
@@ -215,10 +215,10 @@ class Test_MoreTimeouts(unittest.TestCase):
         self.s.write_timeout = 1.0
         self.s.xonxoff = True
         self.s.open()
-        self.s.write(serial.XOFF)
+        self.s.write(pyserial.XOFF)
         time.sleep(0.5)  # some systems need a little delay so that they can react on XOFF
         t1 = time.time()
-        self.assertRaises(serial.SerialTimeoutException, self.s.write, b"timeout please" * 200)
+        self.assertRaises(pyserial.SerialTimeoutException, self.s.write, b"timeout please" * 200)
         t2 = time.time()
         self.assertTrue(0.9 <= (t2 - t1) < 2.1, "Timeout not in the given interval ({})".format(t2 - t1))
 
