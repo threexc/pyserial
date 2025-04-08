@@ -16,7 +16,7 @@ NOTE: Some implementations may only support a subset of the settings.
 from __future__ import absolute_import
 
 import time
-import serial
+import pyserial
 
 
 class RS485Settings(object):
@@ -34,7 +34,7 @@ class RS485Settings(object):
         self.delay_before_rx = delay_before_rx
 
 
-class RS485(serial.Serial):
+class RS485(pyserial.Serial):
     """\
     A subclass that replaces the write method with one that toggles RTS
     according to the RS485 settings.
@@ -85,7 +85,7 @@ class RS485(serial.Serial):
     def rs485_mode(self):
         """\
         Enable RS485 mode and apply new settings, set to None to disable.
-        See serial.rs485.RS485Settings for more info about the value.
+        See pyserial.rs485.RS485Settings for more info about the value.
         """
         return self._alternate_rs485_settings
 

@@ -12,7 +12,7 @@ Part of pySerial (http://pyserial.sf.net)  (C) 2002-2015 cliechti@gmx.net
 """
 
 import unittest
-import serial
+import pyserial
 
 # on which port should the tests be performed:
 PORT = 'loop://'
@@ -27,14 +27,14 @@ class Test_SettingsDict(unittest.TestCase):
 
     def test_getsettings(self):
         """the settings dict reflects the current settings"""
-        ser = serial.serial_for_url(PORT, do_not_open=True)
+        ser = pyserial.serial_for_url(PORT, do_not_open=True)
         d = ser.get_settings()
         for setting in SETTINGS:
             self.assertEqual(getattr(ser, setting), d[setting])
 
     def test_partial_settings(self):
         """partial settings dictionaries are also accepted"""
-        ser = serial.serial_for_url(PORT, do_not_open=True)
+        ser = pyserial.serial_for_url(PORT, do_not_open=True)
         d = ser.get_settings()
         del d['baudrate']
         del d['bytesize']
@@ -44,7 +44,7 @@ class Test_SettingsDict(unittest.TestCase):
 
     def test_unknown_settings(self):
         """unknown settings are ignored"""
-        ser = serial.serial_for_url(PORT, do_not_open=True)
+        ser = pyserial.serial_for_url(PORT, do_not_open=True)
         d = ser.get_settings()
         d['foobar'] = 'ignore me'
         ser.apply_settings(d)
@@ -56,14 +56,14 @@ class Test_SettingsDict(unittest.TestCase):
                 ('timeout', 7),
                 ('write_timeout', 12),
                 ('inter_byte_timeout', 15),
-                ('stopbits', serial.STOPBITS_TWO),
-                ('bytesize', serial.SEVENBITS),
-                ('parity', serial.PARITY_ODD),
+                ('stopbits', pyserial.STOPBITS_TWO),
+                ('bytesize', pyserial.SEVENBITS),
+                ('parity', pyserial.PARITY_ODD),
                 ('xonxoff', True),
                 ('rtscts', True),
                 ('dsrdtr', True)):
             kwargs = {'do_not_open': True, setting: value}
-            ser = serial.serial_for_url(PORT, **kwargs)
+            ser = pyserial.serial_for_url(PORT, **kwargs)
             d = ser.get_settings()
             self.assertEqual(getattr(ser, setting), value)
             self.assertEqual(d[setting], value)

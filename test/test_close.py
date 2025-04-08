@@ -7,7 +7,7 @@
 # SPDX-License-Identifier:    BSD-3-Clause
 import sys
 import unittest
-import serial
+import pyserial
 
 # on which port should the tests be performed:
 PORT = 'loop://'
@@ -16,13 +16,13 @@ class TestClose(unittest.TestCase):
 
     def test_closed_true(self):
         # closed is True if a Serial port is not open
-        s = serial.Serial()
+        s = pyserial.Serial()
         self.assertFalse(s.is_open)
         self.assertTrue(s.closed)
 
     def test_closed_false(self):
         # closed is False if a Serial port is open
-        s = serial.serial_for_url(PORT, timeout=1)
+        s = pyserial.serial_for_url(PORT, timeout=1)
         self.assertTrue(s.is_open)
         self.assertFalse(s.closed)
 
@@ -32,7 +32,7 @@ class TestClose(unittest.TestCase):
     def test_close_not_called_by_finalize_if_closed(self):
         close_calls = 0
 
-        class TestSerial(serial.Serial):
+        class TestSerial(pyserial.Serial):
             def close(self):
                 nonlocal close_calls
                 close_calls += 1

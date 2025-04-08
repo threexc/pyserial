@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pyserial"
+dynamic = ["version"]
+description = "Python Serial Port Extension"
+readme = "README.rst"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Chris Liechti", email = "cliechti@gmx.net" },
+    { name = "Trevor Gamblin", email = "tgamblin@ecocode.ca" },
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 2",
+    "Programming Language :: Python :: 2.7",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.4",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Topic :: Communications",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Terminals :: Serial",
+]
+
+[project.optional-dependencies]
+cp2110 = [
+    "hidapi",
+]
+
+[project.scripts]
+pyserial-miniterm = "pyserial.tools.miniterm:main"
+pyserial-ports = "pyserial.tools.list_ports:main"
+
+[project.urls]
+Homepage = "https://github.com/pyserial/pyserial"
+
+[tool.hatch.version]
+path = "pyserial/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/pyserial",
+]

@@ -10,8 +10,8 @@ Test serial.threaded related functionality.
 
 import os
 import unittest
-import serial
-import serial.threaded
+import pyserial
+import pyserial.threaded
 import time
 
 
@@ -24,7 +24,7 @@ class Test_threaded(unittest.TestCase):
     def test_line_reader(self):
         """simple test of line reader class"""
 
-        class TestLines(serial.threaded.LineReader):
+        class TestLines(pyserial.threaded.LineReader):
             def __init__(self):
                 super(TestLines, self).__init__()
                 self.received_lines = []
@@ -32,8 +32,8 @@ class Test_threaded(unittest.TestCase):
             def handle_line(self, data):
                 self.received_lines.append(data)
 
-        ser = serial.serial_for_url(PORT, baudrate=115200, timeout=1)
-        with serial.threaded.ReaderThread(ser, TestLines) as protocol:
+        ser = pyserial.serial_for_url(PORT, baudrate=115200, timeout=1)
+        with pyserial.threaded.ReaderThread(ser, TestLines) as protocol:
             protocol.write_line('hello')
             protocol.write_line('world')
             time.sleep(1)
@@ -42,7 +42,7 @@ class Test_threaded(unittest.TestCase):
     def test_framed_packet(self):
         """simple test of line reader class"""
 
-        class TestFramedPacket(serial.threaded.FramedPacket):
+        class TestFramedPacket(pyserial.threaded.FramedPacket):
             def __init__(self):
                 super(TestFramedPacket, self).__init__()
                 self.received_packets = []
@@ -55,8 +55,8 @@ class Test_threaded(unittest.TestCase):
                 self.transport.write(packet)
                 self.transport.write(self.STOP)
 
-        ser = serial.serial_for_url(PORT, baudrate=115200, timeout=1)
-        with serial.threaded.ReaderThread(ser, TestFramedPacket) as protocol:
+        ser = pyserial.serial_for_url(PORT, baudrate=115200, timeout=1)
+        with pyserial.threaded.ReaderThread(ser, TestFramedPacket) as protocol:
             protocol.send_packet(b'1')
             protocol.send_packet(b'2')
             protocol.send_packet(b'3')
