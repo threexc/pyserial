@@ -823,3 +823,19 @@ Bugfixes (MacOS):
 
 - [#542] list_ports_osx: kIOMasterPortDefault no longer exported on Big Sur
 - [#545, #545] list_ports_osx: getting USB info on BigSur/AppleSilicon
+
+
+Version 3.6 2025-03-18
+----------------------
+This is a new release reflecting a refresh of the project to use a more modern
+build backend and some breaking changes that improve usability.
+
+New features/improvements:
+
+- Replace setup.py with pyproject.toml
+- Use hatch build backend
+- Perform a global rename of "serial" module to "pyserial" for better
+  namespacing across project
+- Rename "LICENSE.txt" to "LICENSE"
+- Add new maintainer info to pyproject.toml, LICENSE copyright line
+- Switch to branch "main" from "master"

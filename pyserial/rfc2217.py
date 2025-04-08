@@ -74,8 +74,8 @@ try:
 except ImportError:
     import queue as Queue
 
-import serial
-from serial.serialutil import SerialBase, SerialException, to_bytes, \
+import pyserial
+from pyserial.serialutil import SerialBase, SerialException, to_bytes, \
     iterbytes, PortNotOpenError, Timeout
 
 # port string is expected to be something like this:
@@ -207,18 +207,18 @@ PURGE_BOTH_BUFFERS = b'\x03'        # Purge both the access server receive data
 
 
 RFC2217_PARITY_MAP = {
-    serial.PARITY_NONE: 1,
-    serial.PARITY_ODD: 2,
-    serial.PARITY_EVEN: 3,
-    serial.PARITY_MARK: 4,
-    serial.PARITY_SPACE: 5,
+    pyserial.PARITY_NONE: 1,
+    pyserial.PARITY_ODD: 2,
+    pyserial.PARITY_EVEN: 3,
+    pyserial.PARITY_MARK: 4,
+    pyserial.PARITY_SPACE: 5,
 }
 RFC2217_REVERSE_PARITY_MAP = dict((v, k) for k, v in RFC2217_PARITY_MAP.items())
 
 RFC2217_STOPBIT_MAP = {
-    serial.STOPBITS_ONE: 1,
-    serial.STOPBITS_ONE_POINT_FIVE: 3,
-    serial.STOPBITS_TWO: 2,
+    pyserial.STOPBITS_ONE: 1,
+    pyserial.STOPBITS_ONE_POINT_FIVE: 3,
+    pyserial.STOPBITS_TWO: 2,
 }
 RFC2217_REVERSE_STOPBIT_MAP = dict((v, k) for k, v in RFC2217_STOPBIT_MAP.items())
 
@@ -1072,7 +1072,7 @@ class PortManager(object):
         for byte in filter(socket.recv(1024)):
             # do things like CR/LF conversion/whatever
             # and write data to the serial port
-            serial.write(byte)
+            pyserial.write(byte)
 
         (socket error handling code left as exercise for the reader)
         """

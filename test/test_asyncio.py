@@ -10,14 +10,14 @@ Test asyncio related functionality.
 
 import os
 import unittest
-import serial
+import pyserial
 
 # on which port should the tests be performed:
 PORT = '/dev/ttyUSB0'
 
 try:
     import asyncio
-    import serial.aio
+    import pyserial.aio
 except (ImportError, SyntaxError):
     # not compatible with python 2.x
     pass

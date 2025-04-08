@@ -16,7 +16,7 @@ try:
 except ImportError:
     pty = None
 import unittest
-import serial
+import pyserial
 
 DATA = b'Hello\n'
 
@@ -29,11 +29,11 @@ class Test_Pty_Serial_Open(unittest.TestCase):
         self.master, self.slave = pty.openpty()
 
     def test_pty_serial_open_slave(self):
-        with serial.Serial(os.ttyname(self.slave), timeout=1) as slave:
+        with pyserial.Serial(os.ttyname(self.slave), timeout=1) as slave:
             pass  # OK
 
     def test_pty_serial_write(self):
-        with serial.Serial(os.ttyname(self.slave), timeout=1) as slave:
+        with pyserial.Serial(os.ttyname(self.slave), timeout=1) as slave:
             with os.fdopen(self.master, "wb") as fd:
                 fd.write(DATA)
                 fd.flush()
@@ -41,7 +41,7 @@ class Test_Pty_Serial_Open(unittest.TestCase):
                 self.assertEqual(DATA, out)
 
     def test_pty_serial_read(self):
-        with serial.Serial(os.ttyname(self.slave), timeout=1) as slave:
+        with pyserial.Serial(os.ttyname(self.slave), timeout=1) as slave:
             with os.fdopen(self.master, "rb") as fd:
                 slave.write(DATA)
                 slave.flush()

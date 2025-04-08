@@ -15,7 +15,7 @@ Cover some of the aspects of serial_for_url and the extension mechanism.
 """
 
 import unittest
-import serial
+import pyserial
 
 
 class Test_URL(unittest.TestCase):
@@ -23,24 +23,24 @@ class Test_URL(unittest.TestCase):
 
     def test_loop(self):
         """loop interface"""
-        serial.serial_for_url('loop://', do_not_open=True)
+        pyserial.serial_for_url('loop://', do_not_open=True)
 
     def test_bad_url(self):
         """invalid protocol specified"""
-        self.assertRaises(ValueError, serial.serial_for_url, "imnotknown://")
+        self.assertRaises(ValueError, pyserial.serial_for_url, "imnotknown://")
 
     def test_custom_url(self):
         """custom protocol handlers"""
         # it's unknown
-        self.assertRaises(ValueError, serial.serial_for_url, "test://")
+        self.assertRaises(ValueError, pyserial.serial_for_url, "test://")
         # add search path
-        serial.protocol_handler_packages.append('handlers')
+        pyserial.protocol_handler_packages.append('handlers')
         # now it should work
-        serial.serial_for_url("test://")
+        pyserial.serial_for_url("test://")
         # remove our handler again
-        serial.protocol_handler_packages.remove('handlers')
+        pyserial.protocol_handler_packages.remove('handlers')
         # so it should not work anymore
-        self.assertRaises(ValueError, serial.serial_for_url, "test://")
+        self.assertRaises(ValueError, pyserial.serial_for_url, "test://")
 
 
 if __name__ == '__main__':

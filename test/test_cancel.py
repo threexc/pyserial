@@ -11,19 +11,19 @@ import sys
 import unittest
 import threading
 import time
-import serial
+import pyserial
 
 # on which port should the tests be performed:
 PORT = 'loop://'
 
 
-@unittest.skipIf(not hasattr(serial.Serial, 'cancel_read'), "cancel_read not supported on platform")
+@unittest.skipIf(not hasattr(pyserial.Serial, 'cancel_read'), "cancel_read not supported on platform")
 class TestCancelRead(unittest.TestCase):
     """Test cancel_read functionality"""
 
     def setUp(self):
         # create a closed serial port
-        self.s = serial.serial_for_url(PORT)
+        self.s = pyserial.serial_for_url(PORT)
         self.assertTrue(hasattr(self.s, 'cancel_read'), "serial instance has no cancel_read")
         self.s.timeout = 10
         self.cancel_called = 0
@@ -47,7 +47,7 @@ class TestCancelRead(unittest.TestCase):
         self.assertEqual(self.cancel_called, 1)
         self.assertTrue(0.5 < (t2 - t1) < 2.5, 'Function did not return in time: {}'.format(t2 - t1))
         #~ self.assertTrue(not self.s.isOpen())
-        #~ self.assertRaises(serial.SerialException, self.s.open)
+        #~ self.assertRaises(pyserial.SerialException, self.s.open)
 
     #~ def test_cancel_before_read(self):
         #~ self.s.cancel_read()
@@ -57,13 +57,13 @@ class TestCancelRead(unittest.TestCase):
 DATA = b'#' * 1024
 
 
-@unittest.skipIf(not hasattr(serial.Serial, 'cancel_write'), "cancel_read not supported on platform")
+@unittest.skipIf(not hasattr(pyserial.Serial, 'cancel_write'), "cancel_read not supported on platform")
 class TestCancelWrite(unittest.TestCase):
     """Test cancel_write functionality"""
 
     def setUp(self):
         # create a closed serial port
-        self.s = serial.serial_for_url(PORT, baudrate=300)  # extra slow ~30B/s => 1kb ~ 34s
+        self.s = pyserial.serial_for_url(PORT, baudrate=300)  # extra slow ~30B/s => 1kb ~ 34s
         self.assertTrue(hasattr(self.s, 'cancel_write'), "serial instance has no cancel_write")
         self.s.write_timeout = 10
         self.cancel_called = 0
@@ -91,7 +91,7 @@ class TestCancelWrite(unittest.TestCase):
         self.assertEqual(self.cancel_called, 1)
         self.assertTrue(0.5 < (t2 - t1) < 2.5, 'Function did not return in time: {}'.format(t2 - t1))
         #~ self.assertTrue(not self.s.isOpen())
-        #~ self.assertRaises(serial.SerialException, self.s.open)
+        #~ self.assertRaises(pyserial.SerialException, self.s.open)
 
     #~ def test_cancel_before_write(self):
         #~ self.s.cancel_write()

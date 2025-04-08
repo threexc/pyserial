@@ -11,7 +11,7 @@ Support threading with serial ports.
 """
 from __future__ import absolute_import
 
-import serial
+import pyserial
 import threading
 
 
@@ -99,7 +99,7 @@ class FramedPacket(Protocol):
 
     def data_received(self, data):
         """Find data enclosed in START/STOP, call handle_packet"""
-        for byte in serial.iterbytes(data):
+        for byte in pyserial.iterbytes(data):
             if byte == self.START:
                 self.in_packet = True
             elif byte == self.STOP:
@@ -196,7 +196,7 @@ class ReaderThread(threading.Thread):
             try:
                 # read all that is there or wait for one byte (blocking)
                 data = self.serial.read(self.serial.in_waiting or 1)
-            except serial.SerialException as e:
+            except pyserial.SerialException as e:
                 # probably some I/O problem such as disconnected USB serial
                 # adapters -> exit
                 error = e
@@ -282,13 +282,13 @@ if __name__ == '__main__':
                 traceback.print_exc(exc)
             sys.stdout.write('port closed\n')
 
-    ser = serial.serial_for_url(PORT, baudrate=115200, timeout=1)
+    ser = pyserial.serial_for_url(PORT, baudrate=115200, timeout=1)
     with ReaderThread(ser, PrintLines) as protocol:
         protocol.write_line('hello')
         time.sleep(2)
 
     # alternative usage
-    ser = serial.serial_for_url(PORT, baudrate=115200, timeout=1)
+    ser = pyserial.serial_for_url(PORT, baudrate=115200, timeout=1)
     t = ReaderThread(ser, PrintLines)
     t.start()
     transport, protocol = t.connect()

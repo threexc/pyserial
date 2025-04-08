@@ -10,7 +10,7 @@
 #
 # URL format:    test://
 
-from serial.serialutil import *
+from pyserial.serialutil import *
 import time
 import socket
 import logging

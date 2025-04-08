@@ -22,7 +22,7 @@ On a 9 pole DSUB these are the pins (2-3) (4-6) (7-8)
 
 import unittest
 import sys
-import serial
+import pyserial
 
 # on which port should the tests be performed:
 PORT = 'loop://'
@@ -42,7 +42,7 @@ class TestHighLoad(unittest.TestCase):
     #~ N = 1
 
     def setUp(self):
-        self.s = serial.serial_for_url(PORT, BAUDRATE, timeout=10)
+        self.s = pyserial.serial_for_url(PORT, BAUDRATE, timeout=10)
 
     def tearDown(self):
         self.s.close()

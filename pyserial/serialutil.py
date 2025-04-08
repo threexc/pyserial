@@ -489,7 +489,7 @@ class SerialBase(io.RawIOBase):
     def rs485_mode(self):
         """\
         Enable RS485 mode and apply new settings, set to None to disable.
-        See serial.rs485.RS485Settings for more info about the value.
+        See pyserial.rs485.RS485Settings for more info about the value.
         """
         return self._rs485_mode
 

@@ -21,7 +21,7 @@ Therefore decoding is binary to text and thus converting binary data to hex dump
 from __future__ import absolute_import
 
 import codecs
-import serial
+import pyserial
 
 
 try:
@@ -37,22 +37,22 @@ HEXDIGITS = '0123456789ABCDEF'
 
 def hex_encode(data, errors='strict'):
     """'40 41 42' -> b'@ab'"""
-    return (serial.to_bytes([int(h, 16) for h in data.split()]), len(data))
+    return (pyserial.to_bytes([int(h, 16) for h in data.split()]), len(data))
 
 
 def hex_decode(data, errors='strict'):
     """b'@ab' -> '40 41 42'"""
-    return (unicode(''.join('{:02X} '.format(ord(b)) for b in serial.iterbytes(data))), len(data))
+    return (unicode(''.join('{:02X} '.format(ord(b)) for b in pyserial.iterbytes(data))), len(data))
 
 
 class Codec(codecs.Codec):
     def encode(self, data, errors='strict'):
         """'40 41 42' -> b'@ab'"""
-        return serial.to_bytes([int(h, 16) for h in data.split()])
+        return pyserial.to_bytes([int(h, 16) for h in data.split()])
 
     def decode(self, data, errors='strict'):
         """b'@ab' -> '40 41 42'"""
-        return unicode(''.join('{:02X} '.format(ord(b)) for b in serial.iterbytes(data)))
+        return unicode(''.join('{:02X} '.format(ord(b)) for b in pyserial.iterbytes(data)))
 
 
 class IncrementalEncoder(codecs.IncrementalEncoder):
@@ -95,13 +95,13 @@ class IncrementalEncoder(codecs.IncrementalEncoder):
                 if self.errors == 'strict':
                     raise UnicodeError('non-hex digit found: {!r}'.format(c))
         self.state = state
-        return serial.to_bytes(encoded)
+        return pyserial.to_bytes(encoded)
 
 
 class IncrementalDecoder(codecs.IncrementalDecoder):
     """Incremental decoder"""
     def decode(self, data, final=False):
-        return unicode(''.join('{:02X} '.format(ord(b)) for b in serial.iterbytes(data)))
+        return unicode(''.join('{:02X} '.format(ord(b)) for b in pyserial.iterbytes(data)))
 
 
 class StreamWriter(Codec, codecs.StreamWriter):
